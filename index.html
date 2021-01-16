@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clock</title>
+    
+    <!--
+                `...&kHmggaJ..
+              .dg@@@@@HHgHHgggmHa,
+          .(W@HgM@@@@g@gg@@@@@g@HMHa,
+        .Hg@@gM@@@@@@@@@gggmHHHHggggHHm,
+       .H@@@@gg@@HHqHHHHWWWW0ZVUWHHHHH@gH,` `
+      .dMMHMHMHgmqWWUUVVOCC<<<~~(+1zXWHgg@mJ.`
+    `(MM@g@@MHHWU0C<<<~~<::::+uwXXV1zVZWgH@gr
+   .JMHH@g@gHWXwC<<___(((<(++OwV>~_((::<?Wg@H, `     `    `    `    `    `
+ `.MN##HMg@gH0Oz++xwXkwOlI+<<zZ1++?<<~~~<<7MH@n.  `
+ .M###HHH@@HWZlw0I<~~_<?VO<__._<<<<;<~._~~~_?WHL`                           `
+ .#N##H##HMH0tdC<(<<+<<<<z<______(:+++__~~~~~~?W,
+.dNNN##HH@HKZtI?<<~~~~:<<+;<+++1jdHOzOzz+<_~::<?h `     `    `    `    `
+MMNNNMH@@@H0I=z<<<~~~~_(zzzdMMSOI11<<>;;<<>;:;>>j. `
+dNNNN#HH@@HZ=?<;:~~~~~(+z+zz1<;;;;:;<<<;>;>?;;;;+o
+(#NN##HHH@HI?>;;::~~~(+z<;;;;;++zzwXVVOXyz=?>;;;>z-            `    `    `
+.MNN##HH@@HZ=>>>;;;::<z;;;>+uZVY<~~(-(-?HHy><:;;>?>       `                   `
+ dNNNHHHH@Hkll???>>>;;;>>+jkX<((jQkHHHkzzdk<:::;>?1
+ .M#N##HM@HHwOl==??>>;>1=zWUI+dHH@@H@MHWMM3<:(;;>?=- `
+  .HMN#HHHHHROl=?=?>>;;<+vHSOdXM#HY=<(+-+IOz;;;>??lv    `      `    `    `
+   .M###HMHHHZtz??=??<<:<;?vWMM$<_++++++zOI?>>>>?lz
+    .MMWWWXzUXrtz=?=?=1+<::>1OOwOzzzzlztlz<>>>>??l>          `
+     ` zUZzdZwrrrtO======z<;>?zOtOtOvz1<;;;;>>>?=t>                         `
+        1OzOOOrrrrrrtll=ll=1+>?+11<<<:::::;<+1zlzt:       `       `    `
+      `  ?1==+zzvzvrrrtllllllz+???<<<<+++1zzOwrvOO:
+           ?ZzqkkuuzzvrrttttttrOzzzzzzOwwwwZuuurtOl     `
+       `   `(MNMHkyZZuzzzvvvvzzzuuuuZZZyZZXuuXwttzl.           `         `
+              WNNMHVyZZuuuuuuuZZZZZZZZZuZZZZXwrtl=?:`               `
+            `  TMMNkyyZZuuuuuuuuuZZZZZZZZXXvrttl=??<.` `                      `
+               `?MMNkZZuzzvzzuuuuzzzzXXXwOttll==??>?zi, `    `
+                  TMNkuvrrrrrrzzzzvrrtOOlll===????>>+QJMH&, `            `
+                  ` _?OvttllzzOOrrttl=???>>?????>>;;+dNdMgggm+..  `  `
+                     .HRrtl=??==zlll=??>;;>>???>>;;>?dHI@@@@gg@ggHa-..`
+               ` ``.dMHHHAO==??>>??=lll1>;;>???>>>>>1dRyM@@@@g@g@ggmmgHm+... ``
+           ` ` ..(dHHMHHMkOwz?>>>??==llzz1z==??>>>>?zX$TW@@@gg@@gggggggggggggHmJ
+            .JMMMHHHHHHHHMk2OO1+>>??==llllll????>??1wX:zM@@@g@g@@gggggmggggmgmmH
+        ``(WMHHHHH@HHHH@@HMnnvA=z???====lll=?=1???zwXz:IM@@@@@gggg@ggggggggggggHggggH
+    -->
+
+    <style>
+        #clock {
+            font-size: 15em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+            -webkit-transform: translateY(-50%) translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">
+        
+    </div>
+    <script>
+        (async() => {
+            const sendTime = new Date().getTime();
+            const json = await (await fetch('https://3fe5a5f690efc790d4764f1c528a4ebb89fa4168.nict.go.jp/cgi-bin/json')).json();
+            const receiveTime = new Date().getTime();
+            const serverTime = json.st * 1000 + (receiveTime - sendTime) / 2;
+            const diff = serverTime - receiveTime;
+            setInterval(() => {
+                const date = new Date(Date.now() + diff);
+                const hour = ('0' + date.getHours()).slice(-2);
+                const minute = ('0' + date.getMinutes()).slice(-2);
+                const second = ('0' + date.getSeconds()).slice(-2);
+                const milliSecond = ('000' + date.getMilliseconds()).slice(-3);
+                document.getElementById('clock').innerText = `${hour}:${minute}:${second}.${milliSecond}`;
+            }, 0);
+        })();
+        
+    </script>
+</body>
+</html>
